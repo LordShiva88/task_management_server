@@ -22,19 +22,18 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-    const tasksCollection = client.db("Task_Magnet").collection('Tasks')
+    const tasksCollection = client.db("Task_Magnet").collection("Tasks");
 
-    app.get('/tasks', async(req, res)=>{
-      const tasks =await tasksCollection.find().toArray();
-      res.send(tasks)
-    })
+    app.get("/tasks", async (req, res) => {
+      const tasks = await tasksCollection.find().toArray();
+      res.send(tasks);
+    });
 
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
   } finally {
-    // await client.close();
   }
 }
 run().catch(console.dir);
