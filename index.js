@@ -44,13 +44,46 @@ async function run() {
       res.send(result);
     });
 
-    app.delete('/tasks/:id', async(req, res)=>{
+    app.delete("/tasks/:id", async (req, res) => {
       const id = req.params.id;
-      console.log(id)
-      const query = {_id: new ObjectId(id)};
+      console.log(id);
+      const query = { _id: new ObjectId(id) };
       const result = await tasksCollection.deleteOne(query);
-      res.send(result)
-    })
+      res.send(result);
+    });
+
+    app.put("/tasks/:id", async (req, res) => {
+      const id = req.params.id;
+      const newTask = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          title: newTask.title,
+          description: newTask.description,
+          deadline: newTask.deadline,
+          priority: newTask.priority,
+          status: "todo",
+          email: newTask.email,
+          date: Date.now(),
+        },
+      };
+      const result = await tasksCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
+
+    app.put("/tasks/status/:id", async (req, res) => {
+      const id = req.params.id;
+      const newStatus = req.body;
+      console.log(newStatus);
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          status: newStatus.status,
+        },
+      };
+      const result = await tasksCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
 
     await client.db("admin").command({ ping: 1 });
     console.log(
