@@ -21,7 +21,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
     const tasksCollection = client.db("Task_Magnet").collection("Tasks");
 
     app.get("/tasks", async (req, res) => {
@@ -36,7 +36,7 @@ async function run() {
         description: data.description,
         deadline: data.deadline,
         priority: data.priority,
-        status: "to-do",
+        status: "todo",
         email: data.email,
         date: Date.now(),
       };
@@ -85,10 +85,10 @@ async function run() {
       res.send(result);
     });
 
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
+    // await client.db("admin").command({ ping: 1 });
+    // console.log(
+    //   "Pinged your deployment. You successfully connected to MongoDB!"
+    // );
   } finally {
   }
 }
